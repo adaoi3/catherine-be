@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS roles CASCADE;
+
+CREATE TABLE roles
+(
+    id   SERIAL PRIMARY KEY,
+    name CHARACTER VARYING(25) NOT NULL UNIQUE
+);
+
+INSERT INTO roles (name)
+VALUES ('ADMIN'),
+       ('MANAGER'),
+       ('USER');

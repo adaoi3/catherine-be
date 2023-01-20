@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+  'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace="com.goodsoft.catherinebe.dao.UserDao">
+
+  <resultMap type='User' id='userResult'>
+    <id property='id' column='id'/>
+    <result property="firstName" column="first_name"/>
+    <result property="lastName" column="last_name"/>
+    <result property="login" column="login"/>
+    <result property="password" column="password"/>
+    <result property="email" column="email"/>
+    <result property="birthDate" column="birth_date"/>
+    <collection property="roles" javaType="java.util.ArrayList" ofType="Role">
+      <id property="id" column="role_id"/>
+      <result property="name" column="role_name"/>
+    </collection>
+  </resultMap>
+
+  <select id="readByLogin" resultMap="userResult">
+    SELECT u.id         AS id,
+           u.first_name AS first_name,
+           u.last_name  AS last_name,
+           u.login      AS login,
+           u.password   AS password,
+           u.email      AS email,
+           r.id         AS role_id,
+           r.name       AS role_name,
+           u.birth_date       AS birth_date
+    FROM users AS u
+           JOIN users_roles ur ON u.id = ur.user_id
+           JOIN roles r ON r.id = ur.role_id
+    WHERE u.login = #{login}
+  </select>
+
+</mapper>
