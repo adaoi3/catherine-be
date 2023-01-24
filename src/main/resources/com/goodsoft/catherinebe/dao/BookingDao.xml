@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+  'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace="com.goodsoft.catherinebe.dao.BookingDao">
+
+  <resultMap type='Booking' id='bookingResult'>
+    <id property='id' column='id'/>
+    <id property='userId' column='user_id'/>
+    <result property="places" column="places"/>
+    <result property="roomTypeId" column="room_type_id"/>
+    <result property="stayTimeStart" column="stay_time_start"/>
+    <result property="stayTimeEnd" column="stay_time_end"/>
+    <result property="bookingDate" column="booking_date"/>
+  </resultMap>
+
+  <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="Booking">
+    INSERT INTO booking AS b
+      (user_id, places, room_type_id, stay_time_start, stay_time_end, booking_date)
+    VALUES (#{userId}, #{places}, #{roomType.id}, #{stayTimeStart}, #{stayTimeEnd}, #{bookingDate})
+  </insert>
+
+</mapper>
