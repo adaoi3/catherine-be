@@ -1,6 +1,7 @@
 package com.goodsoft.catherinebe.dao;
 
 import com.goodsoft.catherinebe.entity.Booking;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface BookingDao {
 
     void create(Booking booking);
+    List<Booking> readAll();
 
 }

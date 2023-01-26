@@ -4,11 +4,17 @@
 
 <mapper namespace="com.goodsoft.catherinebe.dao.RoomTypeDao">
 
+  <select id="readNameById" resultType="String">
+    SELECT rt.name AS name
+    FROM room_types AS rt
+    WHERE rt.id = #{id};
+  </select>
+
   <select id="readByName" resultType="RoomType">
-    SELECT r.id   AS id,
-           r.name AS name
-    FROM room_types AS r
-    WHERE r.name = #{roomTypeName};
+    SELECT rt.id   AS id,
+           rt.name AS name
+    FROM room_types AS rt
+    WHERE rt.name = #{roomTypeName};
   </select>
 
 </mapper>

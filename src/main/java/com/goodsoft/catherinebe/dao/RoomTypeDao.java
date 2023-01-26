@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface RoomTypeDao {
 
+    String readNameById(Long id);
     RoomType readByName(String roomTypeName);
 
 }

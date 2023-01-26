@@ -7,8 +7,8 @@
   <resultMap type='Booking' id='bookingResult'>
     <id property='id' column='id'/>
     <id property='userId' column='user_id'/>
-    <result property="places" column="places"/>
-    <result property="roomTypeId" column="room_type_id"/>
+    <result property="personCount" column="person_count"/>
+    <result property="roomType.id" column="room_type_id"/>
     <result property="stayTimeStart" column="stay_time_start"/>
     <result property="stayTimeEnd" column="stay_time_end"/>
     <result property="bookingDate" column="booking_date"/>
@@ -16,8 +16,22 @@
 
   <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="Booking">
     INSERT INTO booking AS b
-      (user_id, places, room_type_id, stay_time_start, stay_time_end, booking_date)
-    VALUES (#{userId}, #{places}, #{roomType.id}, #{stayTimeStart}, #{stayTimeEnd}, #{bookingDate})
+    (user_id, person_count, room_type_id, stay_time_start, stay_time_end, booking_date)
+    VALUES (#{userId}, #{personCount}, #{roomType.id}, #{stayTimeStart}, #{stayTimeEnd},
+            #{bookingDate})
   </insert>
+
+  <select id="readAll" resultMap="bookingResult">
+    SELECT b.id              AS id,
+           b.user_id         AS user_id,
+           b.person_count    AS person_count,
+           rt.id           AS room_type_id,
+           b.stay_time_start AS stay_time_start,
+           b.stay_time_end   AS stay_time_end,
+           b.booking_date    AS booking_date
+    FROM booking AS b
+           JOIN room_types rt ON b.room_type_id = rt.id
+    ORDER BY b.user_id
+  </select>
 
 </mapper>
