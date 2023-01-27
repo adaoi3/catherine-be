@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS room_types CASCADE;
 
 CREATE TABLE room_types
 (
-    id   BIGSERIAL,
+    id   SERIAL,
     name CHARACTER VARYING(25) NOT NULL,
     PRIMARY KEY (id)
 );

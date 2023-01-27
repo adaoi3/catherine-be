@@ -3,7 +3,7 @@ package com.goodsoft.catherinebe.entity;
 import lombok.Data;
 
 @Data
-public class RoomType {
+public class BookingStatus {
 
     private Integer id;
     private String name;

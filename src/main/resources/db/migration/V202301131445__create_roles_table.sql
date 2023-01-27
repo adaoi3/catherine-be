@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS roles CASCADE;
 
 CREATE TABLE roles
 (
-    id   BIGSERIAL,
+    id   SERIAL,
     name CHARACTER VARYING(25) NOT NULL UNIQUE,
     PRIMARY KEY (id)
 );

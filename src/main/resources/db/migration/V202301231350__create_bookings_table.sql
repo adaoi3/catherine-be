@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS booking;
+DROP TABLE IF EXISTS bookings;
 
-CREATE TABLE booking
+CREATE TABLE bookings
 (
     id              BIGSERIAL,
     user_id         BIGINT,
@@ -14,6 +14,6 @@ CREATE TABLE booking
     FOREIGN KEY (room_type_id) REFERENCES room_types (id)
 );
 
-INSERT INTO booking (user_id, person_count, room_type_id, stay_time_start, stay_time_end,
+INSERT INTO bookings (user_id, person_count, room_type_id, stay_time_start, stay_time_end,
                      booking_date)
 VALUES (2, 3, 1, '2023-01-22', '2023-01-27', '2023-01-20 19:10:25');

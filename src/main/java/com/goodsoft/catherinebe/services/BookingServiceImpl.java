@@ -1,6 +1,7 @@
 package com.goodsoft.catherinebe.services;
 
 import com.goodsoft.catherinebe.dao.BookingDao;
+import com.goodsoft.catherinebe.dao.BookingStatusDao;
 import com.goodsoft.catherinebe.dao.RoomTypeDao;
 import com.goodsoft.catherinebe.dto.BookingDto;
 import com.goodsoft.catherinebe.entity.Booking;
@@ -17,6 +18,7 @@ public class BookingServiceImpl implements BookingService {
 
     private final BookingDao bookingDao;
     private final RoomTypeDao roomTypeDao;
+    private final BookingStatusDao bookingStatusDao;
 
     @Override
     public void create(BookingDto bookingDto) {
@@ -36,6 +38,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = new Booking();
         booking.setId(bookingDto.getId());
         booking.setUserId(bookingDto.getUserId());
+        booking.setAdminId(bookingDto.getAdminId());
         booking.setPersonCount(bookingDto.getPersonCount());
         booking.setRoomType(roomTypeDao.readByName(bookingDto.getRoomType().toUpperCase()));
         booking.setStayTimeStart(bookingDto.getStayTimeStart());
@@ -49,6 +52,8 @@ public class BookingServiceImpl implements BookingService {
         BookingDto bookingDto = new BookingDto();
         bookingDto.setId(booking.getId());
         bookingDto.setUserId(booking.getUserId());
+        bookingDto.setAdminId(booking.getAdminId());
+        bookingDto.setStatus(bookingStatusDao.readNameById(booking.getStatus().getId()));
         bookingDto.setPersonCount(booking.getPersonCount());
         bookingDto.setRoomType(roomTypeDao.readNameById(booking.getRoomType().getId()));
         bookingDto.setStayTimeStart(booking.getStayTimeStart());

@@ -15,6 +15,11 @@ public class BookingDto {
     @NotNull
     private Long userId;
     @NotNull
+    private Long adminId;
+    private Integer roomId;
+    @NotNull
+    private String status;
+    @NotNull
     private Integer personCount;
     @NotNull
     @NotEmpty

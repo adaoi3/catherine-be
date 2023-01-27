@@ -9,6 +9,9 @@ public class Booking {
 
     private Long id;
     private Long userId;
+    private Long adminId;
+    private Integer roomId;
+    private BookingStatus status;
     private Integer personCount;
     private RoomType roomType;
     private LocalDate stayTimeStart;
