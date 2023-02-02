@@ -4,20 +4,24 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class BookingDto {
 
     private Long id;
     @NotNull
     private Long userId;
-    @NotNull
     private Long adminId;
     private Integer roomId;
-    @NotNull
     private String status;
     @NotNull
     private Integer personCount;

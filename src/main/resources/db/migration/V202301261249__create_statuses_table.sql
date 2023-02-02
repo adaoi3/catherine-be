@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS statuses;
+
 CREATE TABLE statuses
 (
     id   SERIAL,

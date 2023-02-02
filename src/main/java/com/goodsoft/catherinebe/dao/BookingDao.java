@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface BookingDao {
 
     void create(Booking booking);
-    List<Booking> readAll();
+    List<Booking> readByStatus(String statusName);
 
 }

@@ -7,7 +7,8 @@ import java.util.List;
 public interface BookingService {
 
     void create(BookingDto bookingDto);
-    List<BookingDto> getAll();
+    List<BookingDto> getBookings(String statusName);
+
     Booking convertToBooking(BookingDto bookingDto);
 
     BookingDto convertToBookingDto(Booking booking);

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,8 +28,8 @@ public class BookingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookingDto>> getBookings() {
-        return new ResponseEntity<>(bookingService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<BookingDto>> getBookingsByStatus(@RequestParam String statusName) {
+        return new ResponseEntity<>(bookingService.getBookings(statusName), HttpStatus.OK);
     }
 
 }

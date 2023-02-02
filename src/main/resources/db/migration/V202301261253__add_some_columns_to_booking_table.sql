@@ -1,8 +1,5 @@
 ALTER TABLE bookings
-    ADD COLUMN admin_id INTEGER NOT NULL DEFAULT 1;
-
-ALTER TABLE bookings
-    ALTER COLUMN admin_id DROP DEFAULT;
+    ADD COLUMN admin_id BIGINT;
 
 ALTER TABLE bookings
     ADD COLUMN room_id INTEGER;
