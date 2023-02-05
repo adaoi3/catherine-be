@@ -30,7 +30,7 @@ public class BookingController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Secured({ "ROLE_ADMIN" })
+    @Secured("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<List<BookingDto>> getBookingsByStatus(@RequestParam String statusName) {
         return new ResponseEntity<>(bookingService.getBookings(statusName), HttpStatus.OK);
