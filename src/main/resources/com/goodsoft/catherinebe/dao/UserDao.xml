@@ -27,7 +27,7 @@
            u.email      AS email,
            r.id         AS role_id,
            r.name       AS role_name,
-           u.birth_date       AS birth_date
+           u.birth_date AS birth_date
     FROM users AS u
            JOIN users_roles ur ON u.id = ur.user_id
            JOIN roles r ON r.id = ur.role_id

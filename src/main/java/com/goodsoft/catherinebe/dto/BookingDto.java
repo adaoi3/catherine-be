@@ -20,9 +20,6 @@ public class BookingDto {
     private Long id;
     @NotNull
     private Long userId;
-    private Long adminId;
-    private Integer roomId;
-    private String status;
     @NotNull
     private Integer personCount;
     @NotNull
@@ -36,5 +33,8 @@ public class BookingDto {
     private LocalDate stayTimeEnd;
     @DateTimeFormat(iso = ISO.DATE_TIME)
     private LocalDateTime bookingDate;
+    private Long adminId;
+    private Integer roomId;
+    private String status;
 
 }

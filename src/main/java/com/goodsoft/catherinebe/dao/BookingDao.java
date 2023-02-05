@@ -11,5 +11,6 @@ public interface BookingDao {
 
     void create(Booking booking);
     List<Booking> readByStatus(String statusName);
+    void update(Booking booking);
 
 }

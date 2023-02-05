@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class Room {
 
-    private Long id;
-    private Integer personCount;
+    private Integer id;
+    private Integer capacity;
     private RoomType roomType;
 
 }

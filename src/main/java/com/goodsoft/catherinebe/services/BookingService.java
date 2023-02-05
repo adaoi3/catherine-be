@@ -8,8 +8,8 @@ public interface BookingService {
 
     void create(BookingDto bookingDto);
     List<BookingDto> getBookings(String statusName);
-
     Booking convertToBooking(BookingDto bookingDto);
-
     BookingDto convertToBookingDto(Booking booking);
+    void edit(BookingDto bookingDto);
+
 }

@@ -7,14 +7,27 @@
   <resultMap type='Booking' id='bookingResult'>
     <id property='id' column='id'/>
     <result property='userId' column='user_id'/>
-    <result property='adminId' column='admin_id'/>
-    <result property='roomId' column='room_id'/>
-    <result property='status.id' column='status'/>
     <result property="personCount" column="person_count"/>
-    <result property="roomType.id" column="room_type"/>
     <result property="stayTimeStart" column="stay_time_start"/>
     <result property="stayTimeEnd" column="stay_time_end"/>
     <result property="bookingDate" column="booking_date"/>
+    <result property='adminId' column='admin_id'/>
+    <association property="roomType" javaType="RoomType">
+      <id property='id' column='desired_room_type_id'/>
+      <result property='name' column='desired_room_type_name'/>
+    </association>
+    <association property="room" javaType="Room">
+      <id property='id' column='room_id'/>
+      <result property='capacity' column='capacity'/>
+      <association property="roomType" javaType="RoomType">
+        <id property='id' column='room_type_id'/>
+        <result property='name' column='room_type_name'/>
+      </association>
+    </association>
+    <association property="status" javaType="BookingStatus">
+      <id property='id' column='status_id'/>
+      <result property='name' column='status_name'/>
+    </association>
   </resultMap>
 
   <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="Booking">
@@ -28,18 +41,32 @@
     SELECT b.id              AS id,
            b.user_id         AS user_id,
            b.person_count    AS person_count,
-           rt.id             AS room_type,
            b.stay_time_start AS stay_time_start,
            b.stay_time_end   AS stay_time_end,
            b.booking_date    AS booking_date,
            b.admin_id        AS admin_id,
-           b.room_id         AS room_id,
-           s.id              AS status
+           drt.id            AS desired_room_type_id,
+           drt.name          AS desired_room_type_name,
+           r.id              AS room_id,
+           r.capacity        AS capacity,
+           rt.id             AS room_type_id,
+           rt.name           AS room_type_name,
+           s.id              AS status_id,
+           s.name            AS status_name
     FROM bookings AS b
-           JOIN room_types rt ON b.room_type_id = rt.id
            JOIN statuses s ON b.status_id = s.id
+           JOIN room_types drt ON b.room_type_id = drt.id
+           LEFT JOIN rooms r ON b.room_id = r.id
+           LEFT JOIN room_types rt ON r.room_type_id = rt.id
     WHERE s.name = #{statusName}
     ORDER BY b.user_id
   </select>
+
+  <update id="update" parameterType="Booking">
+    UPDATE bookings
+    SET room_id = #{room.id},
+        status  = #{status.id}
+    WHERE id = #{id};
+  </update>
 
 </mapper>

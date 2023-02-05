@@ -9,13 +9,13 @@ public class Booking {
 
     private Long id;
     private Long userId;
-    private Long adminId;
-    private Integer roomId;
-    private BookingStatus status;
     private Integer personCount;
     private RoomType roomType;
     private LocalDate stayTimeStart;
     private LocalDate stayTimeEnd;
     private LocalDateTime bookingDate;
+    private Long adminId;
+    private Room room;
+    private BookingStatus status;
 
 }

@@ -10,4 +10,11 @@
     WHERE s.id = #{id};
   </select>
 
+  <select id="readByName" resultType="BookingStatus">
+    SELECT s.id   AS id,
+           s.name AS name
+    FROM statuses AS s
+    WHERE s.name = #{statusName};
+  </select>
+
 </mapper>

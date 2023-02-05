@@ -2,12 +2,14 @@ package com.goodsoft.catherinebe.services;
 
 import com.goodsoft.catherinebe.dao.BookingDao;
 import com.goodsoft.catherinebe.dao.BookingStatusDao;
+import com.goodsoft.catherinebe.dao.RoomDao;
 import com.goodsoft.catherinebe.dao.RoomTypeDao;
 import com.goodsoft.catherinebe.dto.BookingDto;
 import com.goodsoft.catherinebe.entity.Booking;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingDao bookingDao;
     private final RoomTypeDao roomTypeDao;
     private final BookingStatusDao bookingStatusDao;
+    private final RoomDao roomDao;
 
     @Override
     public void create(BookingDto bookingDto) {
@@ -34,6 +37,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public void edit(BookingDto bookingDto) {
+        bookingDao.update(convertToBooking(bookingDto));
+    }
+
+    @Override
     public Booking convertToBooking(BookingDto bookingDto) {
         Booking booking = new Booking();
         booking.setId(bookingDto.getId());
@@ -44,6 +52,8 @@ public class BookingServiceImpl implements BookingService {
         booking.setStayTimeEnd(bookingDto.getStayTimeEnd());
         booking.setBookingDate(Timestamp.from(Instant.now()).toLocalDateTime());
         booking.setAdminId(bookingDto.getAdminId());
+        booking.setRoom(roomDao.readById(bookingDto.getRoomId()));
+        booking.setStatus(bookingStatusDao.readByName(bookingDto.getStatus()));
         return booking;
     }
 
@@ -58,7 +68,9 @@ public class BookingServiceImpl implements BookingService {
         bookingDto.setStayTimeEnd(booking.getStayTimeEnd());
         bookingDto.setBookingDate(booking.getBookingDate());
         bookingDto.setAdminId(booking.getAdminId());
-        bookingDto.setRoomId(booking.getRoomId());
+        Optional.ofNullable(booking.getRoom()).ifPresent(
+            room -> bookingDto.setRoomId(room.getId())
+        );
         bookingDto.setStatus(bookingStatusDao.readNameById(booking.getStatus().getId()));
         return bookingDto;
     }
