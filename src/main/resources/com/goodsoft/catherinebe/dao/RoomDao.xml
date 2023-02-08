@@ -20,7 +20,7 @@
            rt.name    AS room_type_name
     FROM rooms AS r
            JOIN room_types rt ON r.room_type_id = rt.id
-    WHERE r.name = #{roomId};
+    WHERE r.id = #{roomId};
   </select>
 
 </mapper>

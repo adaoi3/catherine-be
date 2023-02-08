@@ -21,18 +21,17 @@ public class TokenService {
         this.encoder = encoder;
     }
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(User user) {
         Instant now = Instant.now();
-        List<String> roles = authentication.getAuthorities().stream()
+        List<String> roles = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-        User user = (User) authentication.getPrincipal();
         Long id = user.getId();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
-                .subject(authentication.getName())
+                .subject(user.getLogin())
                 .claim("roles", roles)
                 .claim("id", id)
                 .build();

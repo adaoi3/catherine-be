@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 public final class CustomJwtGrantedAuthoritiesConverter implements
     Converter<Jwt, AbstractAuthenticationToken> {
@@ -21,7 +20,7 @@ public final class CustomJwtGrantedAuthoritiesConverter implements
         for (String authority : getAuthorities(jwt)) {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority));
         }
-        return new JwtAuthenticationToken(jwt, grantedAuthorities);
+        return new CustomJwtAuthenticationToken(jwt, grantedAuthorities);
     }
 
     @SuppressWarnings("unchecked")

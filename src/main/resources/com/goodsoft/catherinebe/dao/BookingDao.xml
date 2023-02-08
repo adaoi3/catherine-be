@@ -62,10 +62,22 @@
     ORDER BY b.user_id
   </select>
 
-  <update id="update" parameterType="Booking">
+  <update id="confirmBooking" parameterType="ConfirmBookingDto">
     UPDATE bookings
-    SET room_id = #{room.id},
-        status  = #{status.id}
+    SET admin_id  = #{adminId},
+        room_id   = #{roomId},
+        status_id = (SELECT id
+                     FROM statuses
+                     WHERE name = #{status})
+    WHERE id = #{id};
+  </update>
+
+  <update id="declineBooking" parameterType="DeclineBookingDto">
+    UPDATE bookings
+    SET admin_id  = #{adminId},
+        status_id = (SELECT id
+                     FROM statuses
+                     WHERE name = #{status})
     WHERE id = #{id};
   </update>
 

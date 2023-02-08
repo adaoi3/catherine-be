@@ -52,6 +52,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
+                .requestMatchers("/token").permitAll()
                 .anyRequest().authenticated())
             .oauth2ResourceServer()
             .jwt()
@@ -59,7 +60,7 @@ public class SecurityConfig {
             .and().and()
             .sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .httpBasic(Customizer.withDefaults())
+            .httpBasic().disable()
             .build();
     }
 

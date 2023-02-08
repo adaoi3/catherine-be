@@ -1,5 +1,7 @@
 package com.goodsoft.catherinebe.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -21,6 +23,8 @@ public class BookingDto {
     @NotNull
     private Long userId;
     @NotNull
+    @Min(1)
+    @Max(5)
     private Integer personCount;
     @NotNull
     @NotEmpty

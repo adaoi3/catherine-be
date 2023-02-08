@@ -5,6 +5,8 @@ import com.goodsoft.catherinebe.dao.BookingStatusDao;
 import com.goodsoft.catherinebe.dao.RoomDao;
 import com.goodsoft.catherinebe.dao.RoomTypeDao;
 import com.goodsoft.catherinebe.dto.BookingDto;
+import com.goodsoft.catherinebe.dto.ConfirmBookingDto;
+import com.goodsoft.catherinebe.dto.DeclineBookingDto;
 import com.goodsoft.catherinebe.entity.Booking;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -37,8 +39,13 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void edit(BookingDto bookingDto) {
-        bookingDao.update(convertToBooking(bookingDto));
+    public void confirmBooking(ConfirmBookingDto confirmBookingDto) {
+        bookingDao.confirmBooking(confirmBookingDto);
+    }
+
+    @Override
+    public void declineBooking(DeclineBookingDto declineBookingDto) {
+        bookingDao.declineBooking(declineBookingDto);
     }
 
     @Override
