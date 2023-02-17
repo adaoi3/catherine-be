@@ -23,4 +23,25 @@
     WHERE r.id = #{roomId};
   </select>
 
+  <select id="getAvailableRooms" resultMap="roomResult">
+    WITH occupied_rooms AS (
+        SELECT DISTINCT
+            b.room_id
+        FROM bookings b
+        JOIN statuses s on b.status_id = s.id
+        WHERE (b.stay_time_start >= #{stayTimeStart}
+            AND #{stayTimeEnd} >= b.stay_time_end)
+            AND s.name = #{status}
+    )
+    SELECT r.id       AS id,
+           r.capacity AS capacity,
+           rt.id      AS room_type_id,
+           rt.name    AS room_type_name
+    FROM rooms r
+        JOIN room_types rt ON r.room_type_id = rt.id
+        LEFT JOIN occupied_rooms ON r.id = occupied_rooms.room_id
+    WHERE occupied_rooms.room_id IS NULL
+        AND rt.name = #{roomType};
+  </select>
+
 </mapper>
