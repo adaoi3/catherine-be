@@ -15,8 +15,12 @@ public interface BookingDao {
 
     List<Booking> readByStatus(String statusName);
 
-    void confirmBooking(ConfirmBookingDto confirmBookingDto);
+    List<Booking> readByUserId(Long userId);
 
-    void declineBooking(DeclineBookingDto declineBookingDto);
+    void confirm(ConfirmBookingDto confirmBookingDto);
+
+    void decline(DeclineBookingDto declineBookingDto);
+
+    void delete(Long id);
 
 }

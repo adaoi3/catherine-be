@@ -31,7 +31,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getBookings(String statusName) {
+    public List<BookingDto> getByStatus(String statusName) {
         return bookingDao.readByStatus(statusName)
             .stream()
             .map(this::convertToBookingDto)
@@ -39,13 +39,26 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void confirmBooking(ConfirmBookingDto confirmBookingDto) {
-        bookingDao.confirmBooking(confirmBookingDto);
+    public List<BookingDto> getByUserId(Long userId) {
+        return bookingDao.readByUserId(userId)
+            .stream()
+            .map(this::convertToBookingDto)
+            .collect(Collectors.toList());
     }
 
     @Override
-    public void declineBooking(DeclineBookingDto declineBookingDto) {
-        bookingDao.declineBooking(declineBookingDto);
+    public void confirm(ConfirmBookingDto confirmBookingDto) {
+        bookingDao.confirm(confirmBookingDto);
+    }
+
+    @Override
+    public void decline(DeclineBookingDto declineBookingDto) {
+        bookingDao.decline(declineBookingDto);
+    }
+
+    @Override
+    public void delete(Long id) {
+        bookingDao.delete(id);
     }
 
     @Override

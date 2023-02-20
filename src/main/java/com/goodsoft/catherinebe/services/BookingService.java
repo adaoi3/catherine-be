@@ -10,11 +10,15 @@ public interface BookingService {
 
     void create(BookingDto bookingDto);
 
-    List<BookingDto> getBookings(String statusName);
+    List<BookingDto> getByStatus(String statusName);
 
-    void confirmBooking(ConfirmBookingDto confirmBookingDto);
+    List<BookingDto> getByUserId(Long userId);
 
-    void declineBooking(DeclineBookingDto declineBookingDto);
+    void confirm(ConfirmBookingDto confirmBookingDto);
+
+    void decline(DeclineBookingDto declineBookingDto);
+
+    void delete(Long id);
 
     Booking convertToBooking(BookingDto bookingDto);
 

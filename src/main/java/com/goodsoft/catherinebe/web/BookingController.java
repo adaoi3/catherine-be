@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,13 @@ public class BookingController {
     @Secured("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<List<BookingDto>> getBookingsByStatus(@RequestParam String statusName) {
-        return new ResponseEntity<>(bookingService.getBookings(statusName), HttpStatus.OK);
+        return new ResponseEntity<>(bookingService.getByStatus(statusName), HttpStatus.OK);
+    }
+
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<BookingDto>> getBookingsByUserId(@PathVariable Long userId) {
+        return new ResponseEntity<>(bookingService.getByUserId(userId), HttpStatus.OK);
     }
 
     @Secured("ROLE_ADMIN")
@@ -47,7 +54,7 @@ public class BookingController {
         CustomJwtAuthenticationToken jwt) {
         confirmBookingDto.setId(id);
         confirmBookingDto.setAdminId(jwt.getId());
-        bookingService.confirmBooking(confirmBookingDto);
+        bookingService.confirm(confirmBookingDto);
         SecurityContextHolder.getContext().getAuthentication();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -60,7 +67,14 @@ public class BookingController {
         declineBookingDto.setId(id);
         declineBookingDto.setAdminId(jwt.getId());
         declineBookingDto.setStatus(status);
-        bookingService.declineBooking(declineBookingDto);
+        bookingService.decline(declineBookingDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Secured("ROLE_USER")
+    @DeleteMapping("/{id}/cancel")
+    public ResponseEntity<Void> cancelBooking(@PathVariable Long id) {
+        bookingService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

@@ -62,7 +62,32 @@
     ORDER BY b.user_id
   </select>
 
-  <update id="confirmBooking" parameterType="ConfirmBookingDto">
+  <select id="readByUserId" resultMap="bookingResult">
+    SELECT b.id              AS id,
+           b.user_id         AS user_id,
+           b.person_count    AS person_count,
+           b.stay_time_start AS stay_time_start,
+           b.stay_time_end   AS stay_time_end,
+           b.booking_date    AS booking_date,
+           b.admin_id        AS admin_id,
+           drt.id            AS desired_room_type_id,
+           drt.name          AS desired_room_type_name,
+           r.id              AS room_id,
+           r.capacity        AS capacity,
+           rt.id             AS room_type_id,
+           rt.name           AS room_type_name,
+           s.id              AS status_id,
+           s.name            AS status_name
+    FROM bookings AS b
+           JOIN statuses s ON b.status_id = s.id
+           JOIN room_types drt ON b.room_type_id = drt.id
+           LEFT JOIN rooms r ON b.room_id = r.id
+           LEFT JOIN room_types rt ON r.room_type_id = rt.id
+    WHERE b.user_id = #{userId}
+    ORDER BY b.user_id
+  </select>
+
+  <update id="confirm" parameterType="ConfirmBookingDto">
     UPDATE bookings
     SET admin_id  = #{adminId},
         room_id   = #{roomId},
@@ -72,7 +97,7 @@
     WHERE id = #{id};
   </update>
 
-  <update id="declineBooking" parameterType="DeclineBookingDto">
+  <update id="decline" parameterType="DeclineBookingDto">
     UPDATE bookings
     SET admin_id  = #{adminId},
         status_id = (SELECT id
@@ -80,5 +105,11 @@
                      WHERE name = #{status})
     WHERE id = #{id};
   </update>
+
+  <delete id="delete" parameterType="Long">
+    DELETE
+    FROM bookings AS b
+    WHERE b.id = #{id};
+  </delete>
 
 </mapper>
