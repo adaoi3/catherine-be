@@ -72,7 +72,7 @@ public class BookingController {
     }
 
     @Secured("ROLE_USER")
-    @DeleteMapping("/{id}/cancel")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> cancelBooking(@PathVariable Long id) {
         bookingService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

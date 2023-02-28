@@ -3,7 +3,7 @@ package com.goodsoft.catherinebe.controller;
 import com.goodsoft.catherinebe.dto.AuthenticationDto;
 import com.goodsoft.catherinebe.dto.TokenDto;
 import com.goodsoft.catherinebe.entity.User;
-import com.goodsoft.catherinebe.services.TokenService;
+import com.goodsoft.catherinebe.services.TokenServiceImpl;
 import com.goodsoft.catherinebe.services.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AuthController {
 
-    private final TokenService tokenService;
+    private final TokenServiceImpl tokenServiceImpl;
     private final UserServiceImpl userService;
     private final PasswordEncoder passwordEncoder;
-
 
     @PostMapping("/token")
     public ResponseEntity<TokenDto> token(@RequestBody AuthenticationDto authenticationDto) {
@@ -30,13 +29,11 @@ public class AuthController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        boolean matches = passwordEncoder.matches(authenticationDto.getPassword(),
-            user.getPassword());
-        if (!matches) {
+        if (!passwordEncoder.matches(authenticationDto.getPassword(), user.getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         log.debug("Token requested for user: '{}'", user.getLogin());
-        String token = tokenService.generateToken(user);
+        String token = tokenServiceImpl.generateToken(user);
         log.debug("Token granted: {}", token);
         return ResponseEntity.ok(new TokenDto(token));
     }

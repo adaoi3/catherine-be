@@ -27,7 +27,7 @@ public class RoomServiceImpl implements RoomService {
         return roomDao.getAvailableRooms(bookingDto)
             .stream()
             .map(this::convertToRoomDto)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     @Override

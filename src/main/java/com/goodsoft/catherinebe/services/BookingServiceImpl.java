@@ -8,16 +8,19 @@ import com.goodsoft.catherinebe.dto.BookingDto;
 import com.goodsoft.catherinebe.dto.ConfirmBookingDto;
 import com.goodsoft.catherinebe.dto.DeclineBookingDto;
 import com.goodsoft.catherinebe.entity.Booking;
+import com.goodsoft.catherinebe.exception.InvalidBookingPeriodException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookingServiceImpl implements BookingService {
 
     private final BookingDao bookingDao;
@@ -27,23 +30,18 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void create(BookingDto bookingDto) {
+        validateBookingPeriod(bookingDto.getStayTimeStart(), bookingDto.getStayTimeEnd());
         bookingDao.create(convertToBooking(bookingDto));
     }
 
     @Override
     public List<BookingDto> getByStatus(String statusName) {
-        return bookingDao.readByStatus(statusName)
-            .stream()
-            .map(this::convertToBookingDto)
-            .collect(Collectors.toList());
+        return bookingDao.readByStatus(statusName).stream().map(this::convertToBookingDto).toList();
     }
 
     @Override
     public List<BookingDto> getByUserId(Long userId) {
-        return bookingDao.readByUserId(userId)
-            .stream()
-            .map(this::convertToBookingDto)
-            .collect(Collectors.toList());
+        return bookingDao.readByUserId(userId).stream().map(this::convertToBookingDto).toList();
     }
 
     @Override
@@ -88,11 +86,25 @@ public class BookingServiceImpl implements BookingService {
         bookingDto.setStayTimeEnd(booking.getStayTimeEnd());
         bookingDto.setBookingDate(booking.getBookingDate());
         bookingDto.setAdminId(booking.getAdminId());
-        Optional.ofNullable(booking.getRoom()).ifPresent(
-            room -> bookingDto.setRoomId(room.getId())
-        );
+        Optional.ofNullable(booking.getRoom())
+            .ifPresent(room -> bookingDto.setRoomId(room.getId()));
         bookingDto.setStatus(bookingStatusDao.readNameById(booking.getStatus().getId()));
         return bookingDto;
+    }
+
+    @Override
+    public void validateBookingPeriod(LocalDate start, LocalDate end) {
+        if (
+            start.isAfter(end) || end.isBefore(start) || start.isBefore(LocalDate.now())
+                || end.isBefore(LocalDate.now())
+        ) {
+            InvalidBookingPeriodException exc = new InvalidBookingPeriodException(
+                "Incorrect stay time entered"
+                    + "\nEntered stay time start: " + start
+                    + ".\nAnd stay time end: " + end);
+            log.error("Incorrect stay time entered", exc);
+            throw exc;
+        }
     }
 
 }
