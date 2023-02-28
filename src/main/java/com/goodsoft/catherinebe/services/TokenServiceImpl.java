@@ -28,7 +28,7 @@ public class TokenServiceImpl implements TokenService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(5, ChronoUnit.SECONDS)) /*todo change time...*/
+                .expiresAt(now.plus(1, ChronoUnit.HOURS))
                 .subject(user.getLogin())
                 .claim("roles", roles)
                 .claim("id", id)
